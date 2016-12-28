@@ -1,0 +1,43 @@
+<body>
+	<input type="number" 
+		   class="time-input" 
+		   ng-model = "input.hr">
+	<input type="number" 
+		   class="time-input" 
+		   ng-model = "input.min">
+	<input type="number" 
+		   class="time-input" 
+		   ng-model = "input.sec">
+	<input type="text" 
+		   class="time-subject" 
+		   ng-model = "input.subject">
+	
+	<div id="add-button" ng-click="add()">Add Alarm</div>
+	<table>
+		<thead>
+			<tr>
+				<td>S No</td>
+				<td>Alarm Time</td>
+				<td>Subject</td>
+				<td>Time Remaining</td>
+				<td>Operations</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "record in records">
+				<td>{{$index + 1}}</td>
+				<td>{{record.alarm.getHours() + ':' + record.alarm.getMinutes() + ':' + record.alarm.getSeconds()}}</td>
+				<td>{{record.subject}}</td>
+				<td>{{record.remaining}}</td>
+				<td>
+					<span>
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</span>
+					<span>
+						<i class="fa fa-wrench" aria-hidden="true" style="margin-left:10px;"></i>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>

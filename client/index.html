@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My Alarm App</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="font/font-awesome-4.6.3/css/font-awesome.min.css">
+
+		<script type="text/javascript" src="lib/angular.min.js"></script>
+		<script type="text/javascript" src="lib/angular-ui-router.js"></script>
+		<script type="text/javascript" src = "lib/moment.min.js"></script>
+
+		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" src="js/controllers.js"></script>
+	</head>
+	<body ng-app = "alarm">
+		<div id="banner">
+			<img src="img/clock.png">
+			<p>Alarm App</p>
+		</div>
+		<div id = "main-content-wrapper">
+			<div class= "nav-button" ui-sref = 'current' ui-sref-active = "active">
+				Current Time
+			</div>
+			<div class="nav-button" ui-sref = 'add' ui-sref-active = "active">
+				Add Alarm
+			</div>
+			<div class="nav-button" ui-sref = 'total' ui-sref-active = "active">
+				Total Alarms
+			</div>
+			<div class="nav-button" ui-sref = 'about' ui-sref-active = "active">
+				About
+			</div>
+			<div id="main-content">
+				<div ui-view></div>
+			</div>
+		</div>
+	</body>
+</html>
