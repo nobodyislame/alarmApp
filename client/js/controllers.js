@@ -12,10 +12,16 @@ angular.module('alarm.controllers',[])
 		$interval(time, 1000);
 	})
 
-	.controller('AddAlarmCtrl', function($scope, $interval){
+	.controller('AddAlarmCtrl', function($scope, $interval, $http){
 		console.log('in add alarm ctrl');
 		$scope.input = {};
-		$scope.records = [];
+		
+		$scope.load = function(){
+			$http.get('/api/alarms')
+				.success(function(response){
+					$scope.records = response;
+				});
+		}
 
 		var loadRemaining = function(alarm) {
 			var now = new Date();
@@ -56,10 +62,16 @@ angular.module('alarm.controllers',[])
 
 		$interval(
 			function(){
-				for(var i=0; i<$scope.records.length; i++) {
+				if($scope.records){
+					for(var i=0; i<$scope.records.length; i++) {
 					$scope.records[i].remaining = loadRemaining($scope.records[i].alarm);
 				}
+				}else{
+					return;
+				}
 			},1000);
+
+		$scope.load();
 	})
 	.controller('TotalAlarmsCtrl', function($scope){
 		console.log('in total alarms ctrl');
