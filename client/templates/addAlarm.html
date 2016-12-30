@@ -26,12 +26,12 @@
 		<tbody>
 			<tr ng-repeat = "record in records">
 				<td>{{$index + 1}}</td>
-				<td>{{record.alarm.getHours() + ':' + record.alarm.getMinutes() + ':' + record.alarm.getSeconds()}}</td>
+				<td>{{record.time.getHours() + ':' + record.time.getMinutes() + ':' + record.time.getSeconds()}}</td>
 				<td>{{record.subject}}</td>
 				<td>{{record.remaining}}</td>
 				<td>
 					<span>
-						<i class="fa fa-trash" aria-hidden="true"></i>
+						<i class="fa fa-trash" aria-hidden="true" ng-click="remove(record._id)"></i>
 					</span>
 					<span>
 						<i class="fa fa-wrench" aria-hidden="true" style="margin-left:10px;"></i>
