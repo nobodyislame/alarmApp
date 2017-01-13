@@ -6,6 +6,8 @@ var app = express();
 
 app.use(express.static(__dirname+'/client'));
 
+app.use('/asset', express.static(__dirname+'/sounds'));
+
 app.use(bodyParser.json());
 
 Alarm = require('./models/alarm');
@@ -24,8 +26,8 @@ app.get('/api/alarms', function(req, res){
 app.post('/api/alarms', function(req, res){
 	var alarm = {};
 	alarm.time = req.body.time;
-	alarm.remaining = req.body.remaining;
 	alarm.subject = req.body.subject;
+	alarm.done = req.body.done;
 
 	Alarm.addAlarm(alarm, function(err,alarm){
 		if(err){
@@ -43,6 +45,22 @@ app.delete('/api/alarms/:_id', function(req, res){
 		}
 		res.json(alarm);
 	})
+});
+
+app.put('/api/alarms/:_id', function(req, res){
+	var id = req.params._id;
+	var alarm = {
+		time:req.body.time,
+		subject:req.body.subject,
+		done:req.body.done
+	};
+
+	Alarm.updateAlarm(id,alarm,{},function(err,alarm){
+		if(err){
+			console.log(err);
+		}
+		res.json(alarm);
+	});
 });
 
 app.listen(3000);

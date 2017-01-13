@@ -1,4 +1,5 @@
 angular.module('alarm',['ui.router',
+						'mcwebb.sound',
 						'alarm.controllers'])
 
 	.config(function( $stateProvider, $urlRouterProvider){

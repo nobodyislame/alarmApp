@@ -12,7 +12,9 @@
 		   class="time-subject" 
 		   ng-model = "input.subject">
 	
-	<div id="add-button" ng-click="add()">Add Alarm</div>
+	<div id="add-button" ng-click="add()" ng-if="!editMode">Add Alarm</div>
+	<div id="edit" ng-if="editMode" ng-click="update(input.id)">Update</div>
+	<div id="cancel" ng-if="editMode" ng-click="cancel()" >Cancel</div>
 	<table>
 		<thead>
 			<tr>
@@ -28,13 +30,13 @@
 				<td>{{$index + 1}}</td>
 				<td>{{record.time.getHours() + ':' + record.time.getMinutes() + ':' + record.time.getSeconds()}}</td>
 				<td>{{record.subject}}</td>
-				<td>{{record.remaining}}</td>
+				<td>{{record.done ? 'Completed' : record.remaining}}</td>
 				<td>
 					<span>
 						<i class="fa fa-trash" aria-hidden="true" ng-click="remove(record._id)"></i>
 					</span>
 					<span>
-						<i class="fa fa-wrench" aria-hidden="true" style="margin-left:10px;"></i>
+						<i class="fa fa-wrench" aria-hidden="true" style="margin-left:10px;" ng-click="editAlarm(record)"></i>
 					</span>
 				</td>
 			</tr>

@@ -12,14 +12,16 @@ angular.module('alarm.controllers',[])
 		$interval(time, 1000);
 	})
 
-	.controller('AddAlarmCtrl', function($scope, $interval, $http){
+	.controller('AddAlarmCtrl', function($scope, $interval, $http, SoundService){
 		console.log('in add alarm ctrl');
 		
 		$scope.input = {};
-		
+		$scope.editMode = false;
+
 		$scope.load = function(){
 			$http.get('/api/alarms')
 				.success(function(response){
+					console.log(response);
 					$scope.records = response;
 					for(var i=0; i< $scope.records.length;i++){
 						$scope.records[i].time = new Date($scope.records[i].time);
@@ -44,7 +46,8 @@ angular.module('alarm.controllers',[])
 
 			$scope.alarm = {
 							time : alarm_time,
-							subject : $scope.input.subject		
+							subject : $scope.input.subject,
+							done : false		
 						};
 
 			$http.post('/api/alarms', $scope.alarm)
@@ -71,23 +74,82 @@ angular.module('alarm.controllers',[])
 				});
 		}
 
+		$scope.update = function(id){
+			var time = new Date();
+			time.setHours($scope.input.hr);
+			time.setMinutes($scope.input.min);
+			time.setSeconds($scope.input.sec);
+
+			var alarm = {
+				time: time,
+				subject: $scope.input.subject,
+				done:false
+			}
+
+			$http.put('/api/alarms/'+id, alarm)
+				.success(function(response){
+					$scope.load();
+					$scope.editMode = false;
+					$scope.input = '';
+				});
+		}
+
+		$scope.play = function(){
+			SoundService.loadSound({
+				name : 'sound',
+				src: 'http://localhost:3000/asset/tone.mp3'
+			}).then(function(sound){
+				$scope.sound = sound;
+				console.log($scope.sound);
+				$scope.sound.start();
+			});
+		}
+
+		$scope.editAlarm = function(alarm){
+			$scope.editMode = true;
+			$scope.input.hr = alarm.time.getHours();
+			$scope.input.min = alarm.time.getMinutes();
+			$scope.input.sec = alarm.time.getSeconds();
+			$scope.input.subject = alarm.subject;
+			$scope.input.id = alarm._id;
+		}
+
+		$scope.cancel = function(){
+			$scope.editMode= false;
+			$scope.input = {};
+		}
+
 		var loadRemaining = function(alarm) {
+			var target = alarm.time;
 			var now = new Date();
-			var diff = alarm - now;
+			var diff = target - now;
 			if(diff > 0) {
 				var remaining_hours = Math.round((diff / (1000 * 60 * 60)) % 24);
 				var remaining_mins = Math.round((diff / (1000 * 60)) % 60);
 				var remaining_secs = Math.round((diff / (1000)) % 60);
 				return remaining_hours + ":" + remaining_mins + ":" + remaining_secs;
 			}
-			return 'Completed';
+			else if(!alarm.done && diff < 0){
+				(function(alarm){
+					alarm.done = true;
+					var id = alarm._id;
+					$http.put('/api/alarms/'+id,alarm)
+						.success(function(response){
+							$scope.load();
+							$scope.play();
+						});
+				})(alarm);
+			}
+			
 		}
 
 		$interval(
 			function(){
 				if($scope.records){
 					for(var i=0; i<$scope.records.length; i++) {
-						$scope.records[i].remaining = loadRemaining($scope.records[i].time);
+						if(!$scope.records.done){
+							$scope.records[i].remaining = loadRemaining($scope.records[i]);
+						}
 					}
 				}
 				else{

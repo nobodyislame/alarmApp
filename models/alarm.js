@@ -8,6 +8,9 @@ var alarmSchema = mongoose.Schema({
 	subject :{
 		type:String,
 		required:true
+	},
+	done :{
+		type:Boolean
 	}
 });
 
@@ -24,4 +27,14 @@ module.exports.addAlarm= function(alarm,callback){
 module.exports.removeAlarm = function(id, callback){
 	var query = {_id:id};
 	Alarm.remove(query, callback);
+}
+
+module.exports.updateAlarm =function(id, alarm, options, callback){
+	var query = {_id:id};
+	var update = {
+		time : alarm.time,
+		subject : alarm.subject,
+		done : alarm.done
+	}
+	Alarm.findOneAndUpdate(query, update, options, callback);
 }
