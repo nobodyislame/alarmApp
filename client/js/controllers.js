@@ -160,8 +160,46 @@ angular.module('alarm.controllers',[])
 		$scope.load();
 	})
 
-	.controller('TotalAlarmsCtrl', function($scope){
+	.controller('TotalAlarmsCtrl', function($scope, $http){
 		console.log('in total alarms ctrl');
+		$scope.load = function(){
+			$http.get('/api/alarms')
+				.success(function(response){
+					for(var i=0;i<response.length;i++){
+						response[i].time = new Date(response[i].time);
+					}
+
+					$scope.records = [];
+					var found = false;
+					for(var i=0;i<response.length;i++){
+						if($scope.records.length==0){
+							$scope.records.push({
+								date : response[i].time.getDate()+'/'+response[i].time.getMonth()+1+'/'+response[i].time.getFullYear(),
+								count : 1
+							});
+						}
+						else{
+
+							var target = response[i].time.getDate()+'/'+response[i].time.getMonth()+1+'/'+response[i].time.getFullYear();
+							for(var j=0;j<$scope.records.length;j++){
+								if($scope.records[j].date == target){
+									$scope.records[j].count+=1;
+									found = true;
+								}
+							}
+							if(!found){
+								$scope.records.push({
+									date : response[i].time.getDate()+'/'+response[i].time.getMonth()+1+'/'+response[i].time.getFullYear(),
+									count : 1
+								});
+								found = false;
+							}
+						}
+					}
+					console.log($scope.records);
+				});
+		}
+		$scope.load();
 	})
 
 	.controller('AboutCtrl', function($scope){

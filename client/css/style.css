@@ -60,6 +60,7 @@
 	margin : 10px;
 	background-color:white;
 	border-radius: 8px;
+	position: absolute;
 }
 
 .clock {
@@ -178,4 +179,25 @@ td {
     font-size: 16px;
     background-color: #66ffe0;
     color: white
+}
+
+#alarm-heading span{
+	font-size:30px;
+	color: #66ffe0;
+	text-align: center;
+	margin-left: 44%;
+	padding-bottom: 5px;
+	border-bottom: 2px solid  #66ffe0;
+	position: relative;
+	top:20px;
+}
+
+#alarm-details{
+	position: relative;
+	top:30px;
+}
+#alarm-details p{
+	font-size: 22px;
+	color: #66ffe0;
+	text-align: center;
 }
