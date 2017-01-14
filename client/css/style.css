@@ -61,6 +61,7 @@
 	background-color:white;
 	border-radius: 8px;
 	position: absolute;
+	overflow: scroll;
 }
 
 .clock {
@@ -81,7 +82,7 @@
 }
 
 .time-input {
-	width: 100px;
+	width: 90px;
 	height: 50px;
 	margin-top: 10px;
 	margin-left: 10px;
@@ -96,7 +97,7 @@
 }
 
 .time-subject {
-	width: 700px;
+	width: 690px;
 	height: 50px;
 	margin-top: 10px;
 	margin-left: 10px;
@@ -111,7 +112,7 @@
 }
 
 #add-button {
-	width: 235px;
+	width: 250px;
 	height: 40px;
 	margin-top: 2px;
 	margin-left: 10px;
@@ -200,4 +201,17 @@ td {
 	font-size: 22px;
 	color: #66ffe0;
 	text-align: center;
+}
+
+#about {
+	background-color: #66ffe0;
+	color: white;
+	text-align: center;
+	position: relative;
+	top:100px;
+	left: 380px;
+	width: 500px;
+	height: 130px;
+	border-radius: 5px;
+	padding-top:10px;
 }

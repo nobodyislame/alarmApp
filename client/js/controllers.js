@@ -188,12 +188,14 @@ angular.module('alarm.controllers',[])
 								}
 							}
 							if(!found){
+								console.log("called");
 								$scope.records.push({
 									date : response[i].time.getDate()+'/'+response[i].time.getMonth()+1+'/'+response[i].time.getFullYear(),
 									count : 1
 								});
-								found = false;
 							}
+							found = false;
+
 						}
 					}
 					console.log($scope.records);
